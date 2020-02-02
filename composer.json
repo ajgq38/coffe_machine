@@ -1,0 +1,13 @@
+{
+    "require": {
+        "symfony/console": "^4.2",
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Adsmurai\\CoffeeMachine\\": "src",
+            "Adsmurai\\CoffeeMachine\\Tests\\Unit\\": "tests/Unit",
+            "Adsmurai\\CoffeeMachine\\Tests\\Integration\\": "tests/Integration"
+        }
+    }
+}
