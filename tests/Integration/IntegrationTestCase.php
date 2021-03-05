@@ -13,7 +13,7 @@ class IntegrationTestCase extends TestCase
     /** @var \PDO */
     protected $pdo;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -24,7 +24,7 @@ class IntegrationTestCase extends TestCase
         $this->pdo->beginTransaction();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->pdo->rollBack();
         unset($this->pdo);
