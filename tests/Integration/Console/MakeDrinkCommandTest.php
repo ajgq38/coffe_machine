@@ -2,7 +2,7 @@
 
 namespace Adsmurai\CoffeeMachine\Tests\Integration\Console;
 
-use Adsmurai\CoffeeMachine\Console\MakeDrinkCommand;
+use Adsmurai\CoffeeMachine\Console\Application\MakeDrinkCommand;
 use Adsmurai\CoffeeMachine\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 

@@ -2,7 +2,7 @@
 
 namespace Adsmurai\CoffeeMachine\Tests\Integration;
 
-use Adsmurai\CoffeeMachine\Console\MysqlPdoClient;
+use Adsmurai\CoffeeMachine\Console\Infrastructure\Bd\MysqlPdoClient;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 
