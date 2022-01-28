@@ -5,6 +5,7 @@ namespace Adsmurai\CoffeeMachine\Console\Application;
 use Adsmurai\CoffeeMachine\Console\Domain\Entity\Order;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Drink;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Sugar;
+use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Money;
 
 use Adsmurai\CoffeeMachine\Console\Application\Services\SaverOrderHistoric;
 
@@ -52,10 +53,10 @@ class MakeDrinkCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try{
-
+            $money = new Money($input->getArgument('money'));
             $drink = new Drink( strtolower( $input->getArgument('drink-type') ) );
             $sugar = new Sugar( $input->getArgument('sugars'));
-            $order = new Order( $drink, $sugar, $input->getOption('extra-hot'), $input->getArgument('money'));
+            $order = new Order( $drink, $sugar, $input->getOption('extra-hot'), $money );
 
             $output->writeln($this->createMessageOutput($order));
 
