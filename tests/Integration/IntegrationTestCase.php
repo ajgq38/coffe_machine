@@ -21,6 +21,8 @@ class IntegrationTestCase extends TestCase
 
         $this->pdo = MysqlPdoClient::getPdo();
 
+        $this->preparaBD();
+
         $this->pdo->beginTransaction();
     }
 
@@ -30,5 +32,36 @@ class IntegrationTestCase extends TestCase
         unset($this->pdo);
 
         parent::tearDown();
+    }
+
+    private function preparaBD(): void {
+        $this->pdo->query("TRUNCATE orders");
+        $orderDatas = [
+            [
+                'drink_type' => 'tea',
+                'sugars' => 1,
+                'stick' => 1,
+                'extra_hot' => 0],
+            [
+                'drink_type' => 'coffee',
+                'sugars' => 1,
+                'stick' => 1,
+                'extra_hot' => 0],
+            [
+                'drink_type' => 'chocolate',
+                'sugars' => 2,
+                'stick' => 1,
+                'extra_hot' => 1],
+            [
+                'drink_type' => 'coffee',
+                'sugars' => 1,
+                'stick' => 2,
+                'extra_hot' => 1],
+        ];
+
+        $stmt = $this->pdo->prepare('INSERT INTO orders (drink_type, sugars, stick, extra_hot) VALUES (:drink_type, :sugars, :stick, :extra_hot)');
+        foreach ($orderDatas as $orderData){
+            $stmt->execute($orderData);
+        }
     }
 }
