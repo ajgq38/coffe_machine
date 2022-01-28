@@ -3,6 +3,7 @@
 namespace Adsmurai\CoffeeMachine\Console\Application;
 
 use Adsmurai\CoffeeMachine\Console\Application\Services\GetTotalsCash\GetTotalsCash;
+use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Drink;
 use Exception;
 
 use Symfony\Component\Console\Command\Command;
@@ -13,37 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowCashTotal extends Command
 {
-    protected static $defaultName = 'app:order-drink';
-
-    protected function configure()
-    {
-
-       $this->addArgument(
-            'drink-type',
-            InputArgument::REQUIRED,
-            'The type of the drink. (Tea, Coffee or Chocolate)'
-        );
-
-        $this->addArgument(
-            'money',
-            InputArgument::REQUIRED,
-            'The amount of money given by the user'
-        );
-
-        $this->addArgument(
-            'sugars',
-            InputArgument::OPTIONAL,
-            'The number of sugars you want. (0, 1, 2)',
-            0
-        );
-
-        $this->addOption(
-            'extra-hot',
-            'e',
-            InputOption::VALUE_NONE,
-            $description = 'If the user wants to make the drink extra hot'
-        );
-    }
+    protected static $defaultName = 'app:show-totals';
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -52,7 +23,22 @@ class ShowCashTotal extends Command
             $totals_cash = GetTotalsCash::totals();
             $msg = "Estadisticas de Recaudación de dinero. \nDrink Type    Cash \n";
             foreach($totals_cash as $total) {
-                $msg .=$total->drink_type ."        ". $total->amount . "\n" ;
+                $collection = 0;
+                $msg .=$total->drink_type;
+                switch($total->drink_type){
+                    case "tea":
+                       $collection =  $total->amount * Drink::PRICE_TEA;
+                       $msg .= "           ". $collection . "\n";
+                    break;
+                    case "coffee":
+                        $collection =  $total->amount * Drink::PRICE_COFFE;
+                        $msg .= "        ". $collection . "\n";
+                        break;
+                    case "chocolate":
+                        $collection =  $total->amount * Drink::PRICE_CHOCOLATE;
+                        $msg .= "     ". $collection . "\n";
+                        break;
+                }
             }
             $output->writeln($msg);
 
