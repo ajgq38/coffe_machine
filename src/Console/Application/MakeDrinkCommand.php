@@ -57,10 +57,6 @@ class MakeDrinkCommand extends Command
             $sugar = new Sugar( $input->getArgument('sugars'));
             $order = new Order( $drink, $sugar, $input->getOption('extra-hot'), $input->getArgument('money'));
 
-            if(!$order->statusFor($input->getArgument('money'))) {
-                throw new Exception('The '. $order->getDrink()->getType() .' costs '. $order->getDrink()->getPrice() .'.');
-            }
-
             $output->writeln($this->createMessageOutput($order));
 
             SaverOrderHistoric\SaverOrderHistoric::saveOrderHistoric($order);
