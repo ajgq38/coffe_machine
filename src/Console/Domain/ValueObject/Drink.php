@@ -5,9 +5,9 @@ use Exception;
 
 class Drink
 {
-    private const PRICE_TEA = 0.4;
-    private const PRICE_COFFE = 0.5;
-    private const PRICE_CHOCOLATE = 0.6;
+    public const PRICE_TEA = 0.4;
+    public const PRICE_COFFE = 0.5;
+    public const PRICE_CHOCOLATE = 0.6;
     private string $type;
     private float $price;
 
@@ -40,11 +40,5 @@ class Drink
     {
         return $this->type;
     }
-
-    public function isLessPrice($money): bool
-    {
-        return $this->getPrice() <= $money;
-    }
-
 
 }
