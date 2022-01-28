@@ -21,26 +21,26 @@ class ShowCashTotal extends Command
         try{
 
             $totals_cash = GetTotalsCash::totals();
-            $msg = "Estadisticas de Recaudación de dinero. \nDrink Type    Cash \n";
+            $msg = "Drink Type    Cash" . PHP_EOL;
             foreach($totals_cash as $total) {
                 $collection = 0;
                 $msg .=$total->drink_type;
                 switch($total->drink_type){
                     case "tea":
                        $collection =  $total->amount * Drink::PRICE_TEA;
-                       $msg .= "           ". $collection . "\n";
+                       $msg .= "           ". $collection . PHP_EOL;
                     break;
                     case "coffee":
                         $collection =  $total->amount * Drink::PRICE_COFFE;
-                        $msg .= "        ". $collection . "\n";
+                        $msg .= "        ". $collection . PHP_EOL;
                         break;
                     case "chocolate":
                         $collection =  $total->amount * Drink::PRICE_CHOCOLATE;
-                        $msg .= "     ". $collection . "\n";
+                        $msg .= "     ". $collection  . PHP_EOL;
                         break;
                 }
             }
-            $output->writeln($msg);
+            $output->write($msg);
 
         }catch (Exception $e){
             $output->writeln($e->getMessage());
