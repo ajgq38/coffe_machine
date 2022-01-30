@@ -7,7 +7,6 @@ use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Sugar;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Money;
 use Exception;
 
-
 class Order
 {
     private Drink $drink;
@@ -15,7 +14,6 @@ class Order
     private bool $extraHot;
     private Money $money;
     private bool $stick;
-
 
     public function __construct(Drink $drink, Sugar $sugar, bool $extraHot, Money $money)
     {
@@ -28,7 +26,6 @@ class Order
             throw new Exception('The '. $this->getDrink()->getType() .' costs '. $this->getDrink()->getPrice() .'.');
         }
         $this->money = $money;
-
     }
 
 
@@ -37,9 +34,9 @@ class Order
         return $this->extraHot;
     }
 
-    public function getSugar(): int
+    public function getSugar(): Sugar
     {
-        return $this->sugar->getValue();
+        return $this->sugar;
     }
 
     public function getDrink(): Drink
