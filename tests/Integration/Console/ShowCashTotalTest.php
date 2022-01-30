@@ -5,6 +5,7 @@ namespace Adsmurai\CoffeeMachine\Tests\Integration\Console;
 use Adsmurai\CoffeeMachine\Tests\Integration\IntegrationTestCase;
 use Adsmurai\CoffeeMachine\Console\Application\ShowCashTotal;
 use Symfony\Component\Console\Tester\CommandTester;
+use Adsmurai\CoffeeMachine\Console\Infrastructure\OrderRepositoryMysql;
 
 
 class ShowCashTotalTest extends IntegrationTestCase
@@ -13,8 +14,8 @@ class ShowCashTotalTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->application->add(new ShowCashTotal());
+        $order_repository = new OrderRepositoryMysql();
+        $this->application->add(new ShowCashTotal($order_repository));
     }
 
     /**

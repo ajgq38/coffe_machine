@@ -2,7 +2,7 @@
 
 namespace Adsmurai\CoffeeMachine\Tests\Integration;
 
-use Adsmurai\CoffeeMachine\Console\Infrastructure\Bd\MysqlPdoClient;
+use Adsmurai\CoffeeMachine\Console\Infrastructure\MysqlPdoClient;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 
@@ -13,13 +13,20 @@ class IntegrationTestCase extends TestCase
     /** @var \PDO */
     protected $pdo;
 
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        $mysql_pdo = new MysqlPdoClient();
+        $this->pdo = $mysql_pdo->getPdo();
+        parent::__construct($name, $data, $dataName);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->application = new Application();
 
-        $this->pdo = MysqlPdoClient::getPdo();
+
 
         $this->preparaBD();
 

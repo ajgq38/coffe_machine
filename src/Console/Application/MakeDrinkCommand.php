@@ -3,11 +3,10 @@
 namespace Adsmurai\CoffeeMachine\Console\Application;
 
 use Adsmurai\CoffeeMachine\Console\Domain\Entity\Order;
+use Adsmurai\CoffeeMachine\Console\Domain\Services\OrderRepository;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Drink;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Sugar;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Money;
-
-use Adsmurai\CoffeeMachine\Console\Application\Services\SaverOrderHistoric;
 
 use Exception;
 
@@ -20,6 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MakeDrinkCommand extends Command
 {
     protected static $defaultName = 'app:order-drink';
+
+    public function __construct(OrderRepository $orderRepository, ?string $name = null)
+    {
+        parent::__construct($name);
+
+        $this->orderRepository = $orderRepository;
+    }
 
     protected function configure()
     {
@@ -52,17 +58,16 @@ class MakeDrinkCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try{
+        try {
             $money = new Money($input->getArgument('money'));
-            $drink = new Drink( strtolower( $input->getArgument('drink-type') ) );
-            $sugar = new Sugar( $input->getArgument('sugars'));
-            $order = new Order( $drink, $sugar, $input->getOption('extra-hot'), $money );
+            $drink = new Drink(strtolower($input->getArgument('drink-type')));
+            $sugar = new Sugar($input->getArgument('sugars'));
+            $order = new Order($drink, $sugar, $input->getOption('extra-hot'), $money);
 
             $output->writeln($this->createMessageOutput($order));
+            $this->orderRepository->saveOrderHistoric($order);
 
-            SaverOrderHistoric\SaverOrderHistoric::saveOrderHistoric($order);
-
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $output->writeln($e->getMessage());
         }
 
@@ -74,12 +79,11 @@ class MakeDrinkCommand extends Command
         if ($order->getExtraHot()) {
             $message .= ' extra hot';
         }
-        if($order->getStick()) {
-            $message .=  ' with ' . $order->getSugar() . ' sugars (stick included)';
+        if ($order->getStick()) {
+            $message .= ' with ' . $order->getSugar()->getValue() . ' sugars (stick included)';
         }
         return $message;
     }
-
 
 
 }
