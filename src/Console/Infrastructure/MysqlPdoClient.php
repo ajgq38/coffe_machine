@@ -5,10 +5,10 @@ namespace Adsmurai\CoffeeMachine\Console\Infrastructure;
 class MysqlPdoClient
 {
     private \PDO $pdo;
-    private const HOST = 'localhost';
-    private const USER_NAME = 'php';
-    private const USER_PASSWORD = 'php';
-    private const DB_NAME = 'test';
+    private const HOST = 'coffee-machine.mysql';
+    private const USER_NAME = 'coffee_machine';
+    private const USER_PASSWORD = 'coffee_machine';
+    private const DB_NAME = 'coffee_machine';
 
     public function __construct()
     {
