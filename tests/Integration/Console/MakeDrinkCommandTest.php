@@ -5,14 +5,15 @@ namespace Adsmurai\CoffeeMachine\Tests\Integration\Console;
 use Adsmurai\CoffeeMachine\Console\Application\MakeDrinkCommand;
 use Adsmurai\CoffeeMachine\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Adsmurai\CoffeeMachine\Console\Infrastructure\OrderRepositoryMysql;
 
 class MakeDrinkCommandTest extends IntegrationTestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->application->add(new MakeDrinkCommand());
+        $order_repository = new OrderRepositoryMysql();
+        $this->application->add(new MakeDrinkCommand($order_repository));
     }
 
     /**
