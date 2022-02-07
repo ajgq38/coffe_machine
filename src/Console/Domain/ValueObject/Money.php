@@ -2,7 +2,7 @@
 
 namespace Adsmurai\CoffeeMachine\Console\Domain\ValueObject;
 
-class Money
+final class Money
 {
     private float $value;
 
@@ -13,8 +13,14 @@ class Money
 
     }
 
-    public function getValue()
+    public function value()
     {
         return $this->value;
     }
+
+    public function islower(float $price) : bool
+    {
+        return $this->value >= $price;
+    }
+
 }
