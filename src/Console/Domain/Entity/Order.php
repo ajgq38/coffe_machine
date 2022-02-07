@@ -2,51 +2,52 @@
 
 namespace Adsmurai\CoffeeMachine\Console\Domain\Entity;
 
-use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Drink;
+use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\EnumDrink;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Sugar;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Money;
 use Exception;
 
-class Order
+
+final class Order
 {
-    private Drink $drink;
+
+    private EnumDrink $drink;
     private Sugar $sugar;
     private bool $extraHot;
-    private Money $money;
     private bool $stick;
 
-    public function __construct(Drink $drink, Sugar $sugar, bool $extraHot, Money $money)
+    public function __construct(EnumDrink $drink, Sugar $sugar, bool $extraHot)
     {
-
         $this->drink = $drink;
         $this->sugar = $sugar;
         $this->extraHot = $extraHot;
-        $this->stick = $this->sugar->getValue() > 0;
-        if ( $money->getValue() < $drink->getPrice() ) {
-            throw new Exception('The '. $this->getDrink()->getType() .' costs '. $this->getDrink()->getPrice() .'.');
-        }
-        $this->money = $money;
+        $this->stick = $this->sugar->value() > 0;
     }
 
 
-    public function getExtraHot(): bool
+    public function extraHot(): bool
     {
         return $this->extraHot;
     }
 
-    public function getSugar(): Sugar
+    public function sugar(): int
     {
-        return $this->sugar;
+        return $this->sugar->value();
     }
 
-    public function getDrink(): Drink
+    public function drink(): string
     {
-        return $this->drink;
+        return $this->drink->value;
     }
 
-    public function getStick(): bool
+    public function stick(): bool
     {
         return $this->stick;
+    }
+
+    public function price(): float
+    {
+        return $this->drink->price();
     }
 
 }
