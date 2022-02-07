@@ -21,7 +21,7 @@ final class Sugar
 
     }
 
-    public function getValue(): int
+    public function value(): int
     {
         return $this->value;
     }
