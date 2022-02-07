@@ -18,10 +18,10 @@ class OrderRepositoryMysql implements OrderRepository
     {
         $sql = 'INSERT INTO orders (drink_type, sugars, stick, extra_hot) VALUES (:drink_type, :sugars, :stick, :extra_hot)';
         $orderData = [
-            'drink_type' => $order->getDrink()->getType(),
-            'sugars' => $order->getSugar()->getValue(),
-            'stick' => $order->getStick() ?:0,
-            'extra_hot' => $order->getExtraHot() ?: 0,
+            'drink_type' => $order->drink(),
+            'sugars' => $order->sugar(),
+            'stick' => $order->stick() ?:0,
+            'extra_hot' => $order->extraHot() ?: 0,
         ];
 
 
