@@ -4,7 +4,7 @@ namespace Adsmurai\CoffeeMachine\Console\Application;
 
 use Adsmurai\CoffeeMachine\Console\Domain\Entity\Order;
 use Adsmurai\CoffeeMachine\Console\Domain\Services\OrderRepository;
-use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Drink;
+use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\EnumDrink;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Sugar;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Money;
 
@@ -60,12 +60,17 @@ class MakeDrinkCommand extends Command
     {
         try {
             $money = new Money($input->getArgument('money'));
-            $drink = new Drink(strtolower($input->getArgument('drink-type')));
-            $sugar = new Sugar($input->getArgument('sugars'));
-            $order = new Order($drink, $sugar, $input->getOption('extra-hot'), $money);
+            $drink = EnumDrink::from(strtolower($input->getArgument('drink-type')));
 
-            $output->writeln($this->createMessageOutput($order));
+            if ( !$money->islower($drink->price()) ) {
+                throw new Exception('The '. $drink->value .' costs '. $drink->price() .'.');
+            }
+
+            $sugar = new Sugar($input->getArgument('sugars'));
+            $order = new Order($drink, $sugar, $input->getOption('extra-hot'));
+
             $this->orderRepository->saveOrderHistoric($order);
+            $output->writeln($this->createMessageOutput($order));
 
         } catch (Exception $e) {
             $output->writeln($e->getMessage());
@@ -75,12 +80,12 @@ class MakeDrinkCommand extends Command
 
     private function createMessageOutput(Order $order): string
     {
-        $message = 'You have ordered a ' . $order->getDrink()->getType();
-        if ($order->getExtraHot()) {
+        $message = 'You have ordered a ' . $order->drink();
+        if ($order->extraHot()) {
             $message .= ' extra hot';
         }
-        if ($order->getStick()) {
-            $message .= ' with ' . $order->getSugar()->getValue() . ' sugars (stick included)';
+        if ($order->stick()) {
+            $message .= ' with ' . $order->sugar() . ' sugars (stick included)';
         }
         return $message;
     }
