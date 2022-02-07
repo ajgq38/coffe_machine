@@ -1,9 +1,8 @@
 <?php
-
+declare( strict_types = 1 );
 namespace Adsmurai\CoffeeMachine\Console\Application;
 
 use Adsmurai\CoffeeMachine\Console\Domain\Services\OrderRepository;
-use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Drink;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\EnumDrink;
 use Exception;
 
@@ -14,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ShowCashTotal extends Command
 {
     protected static $defaultName = 'app:show-totals';
-    public function __construct(OrderRepository $orderRepository, ?string $name = null, )
+    public function __construct(OrderRepository $orderRepository, ?string $name = null )
     {
 
         parent::__construct($name);
@@ -40,7 +39,7 @@ class ShowCashTotal extends Command
     {
         $msg = "Drink Type    Cash" . PHP_EOL;
         foreach ($totals_cash as $total) {
-            $collection = 0;
+
             $msg .= $total->drink_type;
             switch ($total->drink_type) {
                 case "tea":

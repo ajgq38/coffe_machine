@@ -1,12 +1,9 @@
 <?php
-
+declare( strict_types = 1 );
 namespace Adsmurai\CoffeeMachine\Console\Domain\Entity;
 
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\EnumDrink;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Sugar;
-use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Money;
-use Exception;
-
 
 final class Order
 {

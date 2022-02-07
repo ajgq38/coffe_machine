@@ -1,5 +1,5 @@
 <?php
-
+declare( strict_types = 1 );
 namespace Adsmurai\CoffeeMachine\Console\Domain\ValueObject;
 
 final class Money
@@ -13,12 +13,12 @@ final class Money
 
     }
 
-    public function value()
+    public function value(): float
     {
         return $this->value;
     }
 
-    public function islower(float $price) : bool
+    public function isLower(float $price) : bool
     {
         return $this->value >= $price;
     }

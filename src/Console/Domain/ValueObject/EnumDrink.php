@@ -1,5 +1,5 @@
 <?php
-
+declare( strict_types = 1 );
 namespace Adsmurai\CoffeeMachine\Console\Domain\ValueObject;
 
 enum EnumDrink: string

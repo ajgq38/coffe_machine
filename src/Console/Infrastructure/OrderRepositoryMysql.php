@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Adsmurai\CoffeeMachine\Console\Infrastructure;
 
@@ -24,7 +25,6 @@ class OrderRepositoryMysql implements OrderRepository
             'extra_hot' => $order->extraHot() ?: 0,
         ];
 
-
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($orderData);
     }
@@ -34,8 +34,6 @@ class OrderRepositoryMysql implements OrderRepository
         $sql = 'SELECT drink_type, count(drink_type) AS "amount"
                  FROM orders
                  GROUP BY drink_type;';
-
-
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

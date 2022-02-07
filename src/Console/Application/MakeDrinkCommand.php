@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Adsmurai\CoffeeMachine\Console\Application;
 
@@ -59,15 +60,15 @@ class MakeDrinkCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $money = new Money($input->getArgument('money'));
+            $money = new Money(floatval($input->getArgument('money')));
             $drink = EnumDrink::from(strtolower($input->getArgument('drink-type')));
 
-            if ( !$money->islower($drink->price()) ) {
+            if ( !$money->isLower($drink->price()) ) {
                 throw new Exception('The '. $drink->value .' costs '. $drink->price() .'.');
             }
 
-            $sugar = new Sugar($input->getArgument('sugars'));
-            $order = new Order($drink, $sugar, $input->getOption('extra-hot'));
+            $sugar = new Sugar(intval($input->getArgument('sugars')));
+            $order = new Order($drink, $sugar, boolval($input->getOption('extra-hot')));
 
             $this->orderRepository->saveOrderHistoric($order);
             $output->writeln($this->createMessageOutput($order));
