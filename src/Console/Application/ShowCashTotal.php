@@ -4,6 +4,7 @@ namespace Adsmurai\CoffeeMachine\Console\Application;
 
 use Adsmurai\CoffeeMachine\Console\Domain\Services\OrderRepository;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Drink;
+use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\EnumDrink;
 use Exception;
 
 use Symfony\Component\Console\Command\Command;
@@ -43,15 +44,15 @@ class ShowCashTotal extends Command
             $msg .= $total->drink_type;
             switch ($total->drink_type) {
                 case "tea":
-                    $collection = $total->amount * Drink::PRICE_TEA;
+                    $collection = $total->amount * EnumDrink::PRICE_TEA;
                     $msg .= "           " . $collection . PHP_EOL;
                     break;
                 case "coffee":
-                    $collection = $total->amount * Drink::PRICE_COFFE;
+                    $collection = $total->amount * EnumDrink::PRICE_COFFEE;
                     $msg .= "        " . $collection . PHP_EOL;
                     break;
                 case "chocolate":
-                    $collection = $total->amount * Drink::PRICE_CHOCOLATE;
+                    $collection = $total->amount * EnumDrink::PRICE_CHOCOLATE;
                     $msg .= "     " . $collection . PHP_EOL;
                     break;
             }
