@@ -3,7 +3,10 @@ declare( strict_types = 1 );
 
 namespace Adsmurai\CoffeeMachine\Console\Application;
 
+use Adsmurai\CoffeeMachine\Console\Application\Exceptions\InsufficientMoneyException;
 use Adsmurai\CoffeeMachine\Console\Domain\Entity\Order;
+use Adsmurai\CoffeeMachine\Console\Domain\Exceptions\DrinkTypeException;
+use Adsmurai\CoffeeMachine\Console\Domain\Exceptions\SugarQuantityException;
 use Adsmurai\CoffeeMachine\Console\Domain\Services\OrderRepository;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\EnumDrink;
 use Adsmurai\CoffeeMachine\Console\Domain\ValueObject\Sugar;
@@ -63,20 +66,27 @@ class MakeDrinkCommand extends Command
             $money = new Money(floatval($input->getArgument('money')));
             $drink = EnumDrink::from(strtolower($input->getArgument('drink-type')));
 
-            if ( !$money->isLower($drink->price()) ) {
-                throw new Exception('The '. $drink->value .' costs '. $drink->price() .'.');
+            if (!$money->isLower($drink->price())) {
+                throw new InsufficientMoneyException();
             }
 
             $sugar = new Sugar(intval($input->getArgument('sugars')));
             $order = new Order($drink, $sugar, boolval($input->getOption('extra-hot')));
 
             $this->orderRepository->saveOrderHistoric($order);
-            $output->writeln($this->createMessageOutput($order));
+            $message_output = $this->createMessageOutput($order);
 
+        } catch (InsufficientMoneyException $e) {
+            $message_output = $e->errorMessage($drink);
+        } catch (SugarQuantityException $e) {
+            $message_output = $e->errorMessage();
+        } catch (DrinkTypeException $e) {
+            $message_output = $e->errorMessage();
         } catch (Exception $e) {
             $output->writeln($e->getMessage());
         }
 
+        $output->writeln($message_output);
     }
 
     private function createMessageOutput(Order $order): string
